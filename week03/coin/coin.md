@@ -17,9 +17,9 @@ create table user ( user_id int not null auto_increment primary key  ,user_name 
 | 列名 | 含义 | 类型 |
 | -- | -- | -- |
 | user_id | 用户id | int，主键 |
-| user_assets | 用户总资产 | double |
+| user_assets | 用户总资产 | double unsigned |
 ```
-create table balance ( user_id int not null primary key, user_assets double );
+create table balance ( user_id int not null primary key, user_assets double unsigned );
 ```
 ### 审计用表
 | 列表 | 含义 | 类型 |
