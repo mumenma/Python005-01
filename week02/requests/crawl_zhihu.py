@@ -22,7 +22,6 @@ ANSWER_NUMBER = 0
 # 选择答案的排序的方式。 zhihu 页面上提供了两种排序的方式。分别是 default(默认排序) 和 updated(按时间排序) 。
 SORTED_BY = "default"
 
- 
 def fetchResult(url):
     # 发起网络请求，获取数据
     headers = {
