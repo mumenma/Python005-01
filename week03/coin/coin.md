@@ -24,16 +24,13 @@ create table balance ( user_id int not null primary key, user_assets double unsi
 ### 审计用表
 | 列表 | 含义 | 类型 |
 | -- | -- | -- |
-| time | 转账时间 | Timestamp|
+| time | 转账时间 | datetime|
 | from_id | 转账id | int |
 | to_id | 被转账id | int |
 | amount | 转账金额 | double |
 ```
- create table trans ( time timestamp, from_id int , to_id int, amount double);
+ create table trans ( time datetime, from_id int , to_id int, amount double);
 ```
 
 ## 请实现转账 100 极客币的 SQL(可以使用 pymysql 或 sqlalchemy-orm 实现)，张三余额不足，转账过程中数据库 crash 等情况需保证数据一致性。
-因为目前没有比较好的思路，所以没有下手写代码，正在学习中
-考虑用事务执行，但是是否满足高于100怎么也写到事务中，不太清楚怎么解决，待寻找到解决办法后进行补充
-如果先读然后再进行转账，有可能另外一个请求在这次读之后进行的转账，造成事故
-也期望指导一下
+见coin.py

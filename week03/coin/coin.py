@@ -1,5 +1,6 @@
 import pymysql
 from dbutils.pooled_db import PooledDB #pip3 install DBUtils，连接池
+import datetime
 
 db_config = {
   "host": "127.0.0.1",
@@ -18,20 +19,27 @@ db_config = {
 
 
 def trans(from_name,to_name,amount):
-    spool = PooledDB(pymysql, **db_config) 
-    conn = spool.connection()
-    cur = conn.cursor()
-    sqlFrom = "select user_id from user where user_name = '"+from_name+"';"
-    cur.execute(sqlFrom)
-    fromId = cur.fetchone()[0]
-    sqlTo = "select user_id from user where user_name = '"+to_name+"';"
-    cur.execute(sqlTo)
-    toId = cur.fetchone()[0]
-    # update balance set user_assets = user_assets - amount where user_id = fromId
-    # update balance set user_assets = user_assets + amount where user_id = toId
-# 通过事务处理，晚上继续
+    try:
+        spool = PooledDB(pymysql, **db_config) 
+        conn = spool.connection()
+        with conn.cursor() as cur:
+            sqlFrom = "select user_id from user where user_name = '"+from_name+"';"
+            cur.execute(sqlFrom)
+            fromId = cur.fetchone()[0]
+            sqlTo = "select user_id from user where user_name = '"+to_name+"';"
+            cur.execute(sqlTo)
+            toId = cur.fetchone()[0]
+            update1 = "update balance set user_assets = user_assets - "+str(amount)+" where user_id = "+ str(fromId)
+            cur.execute(update1)
+            update2 =  "update balance set user_assets = user_assets + "+str(amount)+" where user_id = " + str(toId)
+            cur.execute(update2)
+            create_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            insert = "insert into trans values(%s,%s,%s,%s)"
+            cur.execute(insert,(create_time,fromId,toId,amount))
+        conn.commit()
+    except Exception as e:
+        print(f"insert error {e}")
 
-    conn.close()
 
 if __name__ == "__main__":
     trans("张三","李四",100)
