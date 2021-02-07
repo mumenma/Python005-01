@@ -12,8 +12,8 @@ python3 manage.py runserver
 python3 manage.py runserver 0.0.0.0:80  指定ip和端口
 结束启动，用control+c
 # 创建数据库表
-$ python manage.py makemigrations 
-$ python manage.py migrate
+$ python3 manage.py makemigrations 
+$ python3 manage.py migrate
 
 ## 文档
 https://docs.djangoproject.com/zh-hans/3.1/
